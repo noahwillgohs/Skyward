@@ -77,7 +77,7 @@ fun MainScreen() {
             .fillMaxSize()
             .safeContentPadding()
     ) {
-        SkywardBanner(appName)
+        Banner(appName)
         Location(location)
         CurrentTemp(currentTemp, ambientTemp, weatherImage)
         OtherWeatherInformation(low, high, humidity, pressure)
@@ -85,7 +85,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun SkywardBanner(appName: String) {
+fun Banner(appName: String) {
     Row (
         modifier = Modifier
             .fillMaxWidth()
