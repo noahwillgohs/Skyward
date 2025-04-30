@@ -7,4 +7,9 @@
     <string name="pressure1">Pressure:</string>
     <string name="pressure2">hPa</string>
     <string name="location">St.Paul, MN</string>
+    <string name="back">Back</string>
+    <string name="loading">Loading Weather</string>
+    <string name="view_forecast">View 16-day Forecast</string>
+    <string name="zipcode_field_text">Enter Zipcode</string>
+    <string name="zipcode_button">Get Weather</string>
 </resources>
