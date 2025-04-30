@@ -1,27 +1,18 @@
 package com.example.skyward
 
 import android.util.Log
-import android.view.View
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.skyward.models.CurrentWeather
+import com.example.skyward.models.ForecastData
 import com.example.skyward.repositories.WeatherRepository
-import com.example.skyward.services.WeatherService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.http.Query
-import java.io.IOException
 
 class WeatherViewModel (
     private val weatherRepository: WeatherRepository,
@@ -49,11 +40,27 @@ class WeatherViewModel (
     private val _cityName = MutableLiveData<String>()
     val cityName: LiveData<String> = _cityName
 
+    private val _weatherIcon = MutableLiveData<String>()
+    val weatherIcon: LiveData<String> = _weatherIcon
 
-    fun fetchCurrentWeather(lat: String, lon: String) = viewModelScope.launch(Dispatchers.IO) {
+    private val _zipCode = mutableStateOf("")
+    val zipCode: State<String> = _zipCode
+
+    private val _fetchWeatherError = MutableLiveData<String?>()
+    val fetchWeatherError: LiveData<String?> = _fetchWeatherError
+
+    private  val _fCityName = MutableLiveData<String>()
+    val fCityName: LiveData<String> = _fCityName
+
+    private val _forecastList = MutableLiveData<List<ForecastData.Forecast>>()
+    val forecastList: LiveData<List<ForecastData.Forecast>> = _forecastList
+
+    fun fetchCurrentWeather(zip: String) = viewModelScope.launch(Dispatchers.IO) {
+
+        _fetchWeatherError.postValue(null)
         try {
-            val response = weatherRepository.getWeather(lat, lon, apiKey)
-            Log.e("WeatherViewModel", "API Response: $response") // Log the response
+            val response = weatherRepository.getWeather(zip, apiKey)
+            Log.e("WeatherViewModel", "API Response: $response") // Log API response
             _temp.postValue(response.main.temp)
             _feelsLike.postValue(response.main.feelsLike)
             _tempMin.postValue(response.main.tempMin)
@@ -61,9 +68,34 @@ class WeatherViewModel (
             _humidity.postValue(response.main.humidity)
             _pressure.postValue(response.main.pressure)
             _cityName.postValue(response.name)
+            _weatherIcon.postValue(response.weather.firstOrNull()?.icon ?: "default")
 
         } catch (e: Exception) {
-            Log.e("WeatherViewModel", "Error fetching weather data: ${e.message}")
+            _fetchWeatherError.postValue("Error fetching forecast: " + e.message)
         }
+    }
+
+    fun fetchForecastWeather(zip: String) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            print("FETCHING FORECAST")
+            val response = weatherRepository.getForecast(zip, apiKey)
+            print("FETCHED FORECAST")
+            Log.e("WeatherViewModel", "API Response: $response") // Log API response
+            _fCityName.postValue(response.city.cityName)
+            _forecastList.postValue(response.list)
+            print("LEAVING FORECAST")
+
+        } catch (e: Exception) {
+            Log.e("WeatherViewModel", "API Response: ${e.message}")
+            _fetchWeatherError.postValue("Error fetching forecast: " + e.message)
+        }
+    }
+
+    fun updateZipCode(newZipCode: String) {
+        _zipCode.value = newZipCode
+    }
+
+    fun clearFetchWeatherError() {
+        _fetchWeatherError.value = null
     }
 }

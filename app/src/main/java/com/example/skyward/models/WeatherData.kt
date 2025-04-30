@@ -42,3 +42,51 @@ data class CurrentWeather(
         val icon: String
     )
 }
+
+@Serializable
+data class ForecastData (
+    @SerialName("city")
+    val city: City,
+    @SerialName("list")
+    val list: List<Forecast>
+) {
+
+    @Serializable
+    data class City (
+        @SerialName("name")
+        val cityName: String
+    )
+
+    @Serializable
+    data class Forecast (
+        @SerialName("dt")
+        val date: Long,
+        @SerialName("temp")
+        val temp: ForecastTemp,
+        @SerialName("feels_like")
+        val fFeelsLike: ForecastFeelsLike,
+        @SerialName("pressure")
+        val fPressure: Double,
+        @SerialName("humidity")
+        val fHumidity: Double,
+        @SerialName("weather")
+        val fWeather: List<CurrentWeather.Weather>
+    ) {
+        @Serializable
+        data class ForecastTemp (
+            @SerialName("day")
+            val day: Double,
+            @SerialName("min")
+            val min: Double,
+            @SerialName("max")
+            val max: Double
+        )
+
+        @Serializable
+        data class  ForecastFeelsLike (
+            @SerialName("day")
+            val day: Double
+        )
+    }
+}
+
