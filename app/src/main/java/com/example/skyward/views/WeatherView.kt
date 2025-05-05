@@ -1,4 +1,4 @@
-package com.example.skyward
+package com.example.skyward.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +39,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skyward.R
+import com.example.skyward.viewmodels.WeatherViewModel
 
 import kotlin.math.roundToInt
 
@@ -77,7 +79,9 @@ fun MainScreen(viewModel: WeatherViewModel,
             stringResource(R.string.low) + " " + tempMin?.roundToInt() + "°",
             stringResource(R.string.high) + " " + tempMax?.roundToInt() + "°",
             stringResource(R.string.humidity) + " " + humidity?.roundToInt() + "%",
-            stringResource(R.string.pressure1) + " " + pressure?.roundToInt() + " " + stringResource(R.string.pressure2))
+            stringResource(R.string.pressure1) + " " + pressure?.roundToInt() + " " + stringResource(
+                R.string.pressure2
+            ))
         Column (
             modifier = Modifier
                 .fillMaxWidth()

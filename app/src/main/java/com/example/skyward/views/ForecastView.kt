@@ -1,4 +1,4 @@
-package com.example.skyward
+package com.example.skyward.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,20 +22,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawscope.DrawStyle
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.skyward.R
 import com.example.skyward.models.ForecastData
+import com.example.skyward.viewmodels.WeatherViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
