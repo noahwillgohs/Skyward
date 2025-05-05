@@ -10,7 +10,6 @@ class WeatherRepository(private val weatherService: WeatherService) {
     }
 
     suspend fun getForecast(zip: String, apiKey: String): ForecastData {
-        print("IN REPOSITORY")
         return weatherService.getForecastWeather(zip, apiKey)
     }
 }

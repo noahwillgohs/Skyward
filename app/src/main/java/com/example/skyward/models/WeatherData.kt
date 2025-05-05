@@ -13,21 +13,21 @@ data class CurrentWeather(
     @Serializable
     data class Main(
         @SerialName("temp")
-        val temp: Double = 0.0,
+        val temp: Double,
         @SerialName("feels_like")
-        val feelsLike: Double = 0.0,
+        val feelsLike: Double,
         @SerialName("temp_min")
-        val tempMin: Double = 0.0,
+        val tempMin: Double,
         @SerialName("temp_max")
-        val tempMax: Double = 0.0,
+        val tempMax: Double,
         @SerialName("pressure")
-        val pressure: Double = 0.0,
+        val pressure: Double,
         @SerialName("humidity")
-        val humidity: Double = 0.0,
+        val humidity: Double,
         @SerialName("sea_level")
-        val seaLevel: Double = 0.0,
+        val seaLevel: Double,
         @SerialName("grnd_level")
-        val grndLevel: Double = 0.0
+        val grndLevel: Double
     )
 
     @Serializable

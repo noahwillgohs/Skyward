@@ -1,21 +1,21 @@
-package com.example.skyward
+package com.example.skyward.viewmodels
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.*
 import com.example.skyward.models.ForecastData
 import com.example.skyward.repositories.WeatherRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WeatherViewModel (
     private val weatherRepository: WeatherRepository,
+    private val dispatcher: CoroutineDispatcher,
     private val apiKey: String
 ) : ViewModel() {
 
@@ -55,7 +55,7 @@ class WeatherViewModel (
     private val _forecastList = MutableLiveData<List<ForecastData.Forecast>>()
     val forecastList: LiveData<List<ForecastData.Forecast>> = _forecastList
 
-    fun fetchCurrentWeather(zip: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun fetchCurrentWeather(zip: String) = viewModelScope.launch(dispatcher) {
 
         _fetchWeatherError.postValue(null)
         try {
@@ -75,15 +75,12 @@ class WeatherViewModel (
         }
     }
 
-    fun fetchForecastWeather(zip: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun fetchForecastWeather(zip: String) = viewModelScope.launch(dispatcher) {
         try {
-            print("FETCHING FORECAST")
             val response = weatherRepository.getForecast(zip, apiKey)
-            print("FETCHED FORECAST")
             Log.e("WeatherViewModel", "API Response: $response") // Log API response
             _fCityName.postValue(response.city.cityName)
             _forecastList.postValue(response.list)
-            print("LEAVING FORECAST")
 
         } catch (e: Exception) {
             Log.e("WeatherViewModel", "API Response: ${e.message}")
